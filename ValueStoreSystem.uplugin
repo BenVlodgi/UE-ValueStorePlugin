@@ -1,0 +1,29 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Value Store System",
+	"Description": "Store keyed data on objects via Library Interface.",
+	"Category": "Misc",
+	"CreatedBy": "Dream Seed LLC",
+	"CreatedByURL": "https://benvlodgi.github.io/",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "mailto:hello@dreamseed.games",
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "ValueStoreSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "PreLoadingScreen",
+			"WhitelistPlatforms": [
+				"Win64",
+				"Win32",
+				"HTML5"
+			]
+		}
+	]
+}
