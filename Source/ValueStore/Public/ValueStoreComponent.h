@@ -9,7 +9,7 @@
 #include "ValueStoreComponent.generated.h"
 
 /**
- Holds a ValueStoreStruct
+ Holds a ValueStoreObject
 */
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class VALUESTORESYSTEM_API UValueStoreComponent : public UActorComponent
@@ -21,6 +21,6 @@ public:
 	UValueStoreComponent();
 
 	UPROPERTY(BlueprintReadWrite)
-	FValueStoreStruct ValueStoreStruct;
+	UValueStoreObject ValueStoreObject;
 	
 };
