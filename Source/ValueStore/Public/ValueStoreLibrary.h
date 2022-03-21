@@ -5,6 +5,7 @@
 #include "ValueStoreStruct.h"
 #include "ValueStoreInterface.h"
 #include "ValueStoreComponent.h"
+#include "ValueStoreObject.h"
 
 #include "Containers/Map.h"
 #include "UObject/UnrealType.h"
@@ -20,11 +21,12 @@ class UValueStoreLibrary : public UBlueprintFunctionLibrary
 	GENERATED_UCLASS_BODY()
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Value Store System")
-	static UValueStoreObject* UValueStoreLibrary::GetValueStoreObject(UObject* Holder, const bool bCreateIfMissing);
 
+	UFUNCTION(BlueprintCallable, Category = "Value Store System")
+	static TScriptInterface<IValueStoreInterface> GetValueStore(UObject* Holder, const bool bCreateIfMissing);
 
 public:
+
 	/* Stores 'Value' with 'Name' as key. Can be retrieved using GetStoredBoolean(Holder, Name).
 	    @param Holder	Object that holds the given value.
 		@param Name		Name of this value.
@@ -44,7 +46,7 @@ public:
 
 	/* Delete the boolean stored with `Name` as key.
 		@param Holder	Object that holds the given value.
-		@param Name		Name of the value to delete
+		@param Name		Name of the value to delete.
 	*/
 	UFUNCTION(BlueprintCallable, Category = "Value Store System")
 	static void DeleteStoredBoolean(UObject* Holder, const FName Name, bool& Success);
