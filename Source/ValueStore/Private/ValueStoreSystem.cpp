@@ -1,4 +1,4 @@
-// Copyright Benjamin Thomas Blodgett
+// Copyright Dream Seed LLC, 2022
 
 #include "ValueStoreSystem.h"
 
