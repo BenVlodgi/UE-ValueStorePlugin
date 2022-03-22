@@ -5,7 +5,6 @@
 
 UValueStoreLibrary::UValueStoreLibrary(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-
 }
 
 TScriptInterface<IValueStoreInterface> UValueStoreLibrary::GetValueStore(UObject* Holder, const bool bCreateIfMissing)
@@ -56,18 +55,69 @@ TScriptInterface<IValueStoreInterface> UValueStoreLibrary::GetValueStore(UObject
 	return NULL;
 }
 
+
+void UValueStoreLibrary::UsesValueStore(UObject* Holder, bool& Success)
+{
+	// TODO: Implement
+	Success = true;
+}
+
+void UValueStoreLibrary::GetValueStoreStruct(UObject* Holder, bool& IsValidHolder, FValueStoreStruct& ValueStoreStruct)
+{
+	// TODO: Implement
+	IsValidHolder = true;
+}
+
+void UValueStoreLibrary::SetValueStoreStruct(UObject* Holder, FValueStoreStruct ValueStoreStruct, bool& Success)
+{
+	// TODO: Implement
+	Success = true;
+}
+
+void UValueStoreLibrary::AddValueStoreStruct(UObject* Holder, FValueStoreStruct ValueStoreStruct, bool& Success)
+{
+	// TODO: Implement
+	Success = true;
+}
+
+#pragma region Boolean
 void UValueStoreLibrary::SetStoredBoolean(UObject* Holder, const FName Name, const bool Value, bool& Success)
 {
+	// TODO: Implement
 	Success = true;
 }
 
 void UValueStoreLibrary::GetStoredBoolean(UObject* Holder, const FName Name, bool& Found, bool& Value, bool& Success)
 {
+	// TODO: Implement
 	Value = false;
 	Success = true;
 }
 
 void UValueStoreLibrary::DeleteStoredBoolean(UObject* Holder, const FName Name, bool& Success)
 {
+	// TODO: Implement
 	Success = true;
 }
+
+#pragma endregion
+#pragma region Integer
+void UValueStoreLibrary::SetStoredInteger(UObject* Holder, const FName Name, const int Value, bool& Success)
+{
+	// TODO: Implement
+	Success = true;
+}
+
+void UValueStoreLibrary::GetStoredInteger(UObject* Holder, const FName Name, bool& Found, bool& Value, bool& Success)
+{
+	// TODO: Implement
+	Value = false;
+	Success = true;
+}
+
+void UValueStoreLibrary::DeleteStoredInteger(UObject* Holder, const FName Name, bool& Success)
+{
+	// TODO: Implement
+	Success = true;
+}
+#pragma endregion
