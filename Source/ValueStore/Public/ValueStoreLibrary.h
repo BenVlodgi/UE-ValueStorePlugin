@@ -27,37 +27,39 @@ protected:
 
 public:
 
+#pragma region Utility
+
 	/* Checks to see if Holder can be used to Set/Get/Delete Values stored with Value Store System.
 	 * Always true for Actors.
 	 * To Implement Value Store System on a UObject: Implement the IValueStoreHolderInterface on the object, and set up the interface functions to set and get a variable with IValueStoreInterface type.
 		@param Holder	Object to check.
 		@param Success	If the Holder can be used with Value Store System.
 	*/
-	UFUNCTION(BlueprintCallable, Category = "Value Store System", meta = (Keywords = "implements"))
-	static void UsesValueStore(UObject* Holder, bool& Success);
+	UFUNCTION(BlueprintCallable, Category = "Value Store System", meta = (DefaultToSelf = "Holder", Keywords = "uses, has"))
+	static void ImplementsValueStore(UObject* Holder, bool& Success);
 
 	/* Get the Value Store Struct from the Holder. This contains all data stored on this actor with the Value Store System.
 		@param Holder			Object that holds the Value Store data.
 		@param IsValidHolder	If the Holder can be used with Value Store System.
 	*/
-	UFUNCTION(BlueprintCallable, Category = "Value Store System")
+	UFUNCTION(BlueprintCallable, Category = "Value Store System", meta = (DefaultToSelf = "Holder"))
 	static void GetValueStoreStruct(UObject* Holder, bool& IsValidHolder, FValueStoreStruct& ValueStoreStruct);
 
 	/* Set the Value Store data on the Holder. This will replace all data stored on this actor with the Value Store System.
 		@param Holder	Object to hold Value Store data.
 		@param Success	If the Holder could be used with Value Store System.
 	*/
-	UFUNCTION(BlueprintCallable, Category = "Value Store System")
+	UFUNCTION(BlueprintCallable, Category = "Value Store System", meta = (DefaultToSelf = "Holder"))
 	static void SetValueStoreStruct(UObject* Holder, FValueStoreStruct ValueStoreStruct, bool& Success);
 
 	/* Add the Value Store data on the Holder. This will merge the ValueStoreStruct with existing data stored on this actor with the Value Store System.
 		@param Holder	Object to hold Value Store data.
 		@param Success	If the Holder could be used with Value Store System.
 	*/
-	UFUNCTION(BlueprintCallable, Category = "Value Store System")
+	UFUNCTION(BlueprintCallable, Category = "Value Store System", meta = (DefaultToSelf = "Holder"))
 	static void AddValueStoreStruct(UObject* Holder, FValueStoreStruct ValueStoreStruct, bool& Success);
 
-
+	#pragma endregion
 	#pragma region Boolean
 
 	/* Stores 'Value' with 'Name' as key. Can be retrieved using GetStoredBoolean(Holder, Name).
@@ -66,7 +68,7 @@ public:
 		@param Value	Value to store.
 		@param Success	If the Holder could handle this function.
 	*/
-	UFUNCTION(BlueprintCallable, Category = "Value Store System")
+	UFUNCTION(BlueprintCallable, Category = "Value Store System", meta = (DefaultToSelf = "Holder"))
 	static void SetStoredBoolean(UObject* Holder, const FName Name, const bool Value, bool& Success);
 
 	/* Retreive a boolean previously stored with 'Name' as key.
@@ -76,7 +78,7 @@ public:
 		@param Value	Value that was stored.
 		@param Success	If the Holder could handle this function.
 	*/
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Value Store System")
+	UFUNCTION(BlueprintCallable, Category = "Value Store System", meta = (DefaultToSelf = "Holder"))
 	static void GetStoredBoolean(UObject* Holder, const FName Name, bool& Found, bool& Value, bool& Success);
 
 	/* Delete the boolean stored with `Name` as key.
@@ -84,7 +86,7 @@ public:
 		@param Name		Name of the value to delete.
 		@param Success	If the Holder could handle this function.
 	*/
-	UFUNCTION(BlueprintCallable, Category = "Value Store System")
+	UFUNCTION(BlueprintCallable, Category = "Value Store System", meta = (DefaultToSelf = "Holder"))
 	static void DeleteStoredBoolean(UObject* Holder, const FName Name, bool& Success);
 
 	#pragma endregion
@@ -96,7 +98,7 @@ public:
 		@param Value	Value to store.
 		@param Success	If the Holder could handle this function.
 	*/
-	UFUNCTION(BlueprintCallable, Category = "Value Store System")
+	UFUNCTION(BlueprintCallable, Category = "Value Store System", meta = (DefaultToSelf = "Holder"))
 	static void SetStoredInteger(UObject* Holder, const FName Name, const int Value, bool& Success);
 
 	/* Retreive a integer previously stored with 'Name' as key.
@@ -106,15 +108,15 @@ public:
 		@param Value	Value that was stored.
 		@param Success	If the Holder could handle this function.
 	*/
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Value Store System")
-	static void GetStoredInteger(UObject* Holder, const FName Name, bool& Found, bool& Value, bool& Success);
+	UFUNCTION(BlueprintCallable, Category = "Value Store System", meta = (DefaultToSelf = "Holder"))
+	static void GetStoredInteger(UObject* Holder, const FName Name, bool& Found, int& Value, bool& Success);
 
 	/* Delete the integer stored with `Name` as key.
 		@param Holder	Object that holds the given value.
 		@param Name		Name of the value to delete.
 		@param Success	If the Holder could handle this function.
 	*/
-	UFUNCTION(BlueprintCallable, Category = "Value Store System")
+	UFUNCTION(BlueprintCallable, Category = "Value Store System", meta = (DefaultToSelf = "Holder"))
 	static void DeleteStoredInteger(UObject* Holder, const FName Name, bool& Success);
 
 	#pragma endregion

@@ -56,7 +56,7 @@ TScriptInterface<IValueStoreInterface> UValueStoreLibrary::GetValueStore(UObject
 }
 
 
-void UValueStoreLibrary::UsesValueStore(UObject* Holder, bool& Success)
+void UValueStoreLibrary::ImplementsValueStore(UObject* Holder, bool& Success)
 {
 	// TODO: Implement
 	Success = true;
@@ -108,10 +108,10 @@ void UValueStoreLibrary::SetStoredInteger(UObject* Holder, const FName Name, con
 	Success = true;
 }
 
-void UValueStoreLibrary::GetStoredInteger(UObject* Holder, const FName Name, bool& Found, bool& Value, bool& Success)
+void UValueStoreLibrary::GetStoredInteger(UObject* Holder, const FName Name, bool& Found, int& Value, bool& Success)
 {
 	// TODO: Implement
-	Value = false;
+	Value = 0;
 	Success = true;
 }
 
