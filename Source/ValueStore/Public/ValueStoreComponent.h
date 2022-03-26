@@ -21,6 +21,12 @@ public:
 
 	UValueStoreComponent();
 
+	/* Creates the Value Store Object for this component when initialized. 
+	 * Otherwise it will be lazily created when data is first stored via this component.
+	 */
+	UPROPERTY(BlueprintReadWrite)
+	bool bAutoGenerateValueStoreObject = false;
+
 	UPROPERTY(BlueprintReadWrite)
 	TScriptInterface<IValueStoreInterface> ValueStoreObjectReference;
 	

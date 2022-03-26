@@ -13,16 +13,32 @@ UObject* UValueStoreLibrary::GetValueStoreObject(UObject* Holder, const bool bCr
 		return NULL;
 
 	// If the holder implements IValueStoreInterface, then return it. 
-	//IValueStoreInterface* ValueStoreInterface = Cast<IValueStoreInterface>(Holder);
-	//if (IsValid(ValueStoreInterface))
-	//{
-	//	return ValueStoreInterface;
-	//}
+	if (Holder->GetClass()->ImplementsInterface(UValueStoreInterface::StaticClass()))
+	{
+		return Holder;
+	}
 	
-	// If the holder implements IValueStoreHolderInterface, then get the IValueStoreInterface object from it. 
-	//if (Holder->GetClass()->ImplementsInterface(UValueStoreHolderInterface::StaticClass()))
-	IValueStoreHolderInterface* ValueStoreHolderInterface = Cast<IValueStoreHolderInterface>(Holder);
-	if (ValueStoreHolderInterface)
+	// If the holder does not implement IValueStoreHolderInterface, then check if it has a component that implements one of the interfaces
+	if (!Holder->GetClass()->ImplementsInterface(UValueStoreHolderInterface::StaticClass()))
+	{
+		AActor* HolderAsActor = Cast<AActor>(Holder);
+		if(HolderAsActor)
+		{
+			// Get Component from Actor that implements IValueStoreInterface
+			UObject* Component = HolderAsActor->GetComponentByInterface(UValueStoreInterface::StaticClass());
+
+
+			// if that fails...
+			// TODO: Get Component from Actor that implements IValueStoreHolderInterface
+			Component = HolderAsActor->GetComponentByInterface(UValueStoreHolderInterface::StaticClass());
+		}
+		else
+		{
+			// This Holder, does not implement either interface, and is not an actor, there is no way we can get a ValueStore from it.
+			return NULL;
+		}
+	}
+	else // The holder implements IValueStoreHolderInterface, then get the IValueStoreInterface object from it. 
 	{
 		//TScriptInterface<IValueStoreInterface> ValueStoreInterface = IValueStoreHolderInterface::Execute_GetValueStore(Holder);
 		UObject* ValueStoreInterfaceObject = IValueStoreHolderInterface::Execute_GetValueStoreObject(Holder).GetObject();
