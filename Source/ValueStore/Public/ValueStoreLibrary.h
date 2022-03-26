@@ -23,7 +23,7 @@ class UValueStoreLibrary : public UBlueprintFunctionLibrary
 protected:
 	
 	UFUNCTION(BlueprintCallable, Category = "Value Store System")
-	static TScriptInterface<IValueStoreInterface> GetValueStore(UObject* Holder, const bool bCreateIfMissing);
+	static UObject* GetValueStoreObject(UObject* Holder, const bool bCreateIfMissing);
 
 public:
 

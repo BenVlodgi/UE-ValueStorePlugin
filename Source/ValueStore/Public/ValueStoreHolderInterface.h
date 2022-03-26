@@ -22,7 +22,7 @@ class VALUESTORESYSTEM_API IValueStoreHolderInterface
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Value Store System|Value Store Holder Interface")
-	TScriptInterface<IValueStoreInterface> GetValueStore();
+	TScriptInterface<IValueStoreInterface> GetValueStoreObject();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Value Store System|Value Store Holder Interface")
 	void SetValueStoreObject(const TScriptInterface<IValueStoreInterface>& ValueStore, bool &Success);
