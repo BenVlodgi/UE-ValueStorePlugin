@@ -10,7 +10,10 @@ UValueStoreLibrary::UValueStoreLibrary(const FObjectInitializer& ObjectInitializ
 UObject* UValueStoreLibrary::GetValueStoreObject(UObject* Holder, const bool bCreateIfMissing)
 {
 	if (!IsValid(Holder))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Holder is not Valid."));
 		return NULL;
+	}
 
 	// If the holder implements IValueStoreInterface, then return it. 
 	if (Holder->GetClass()->ImplementsInterface(UValueStoreInterface::StaticClass()))
@@ -38,15 +41,13 @@ UObject* UValueStoreLibrary::GetValueStoreObject(UObject* Holder, const bool bCr
 
 			if (!Success)
 			{
-				// TODO: Warn that Holder does not set value store object correctly.
-				//UE_LOG(LogTemp, Warning, TEXT("Holder does not set value store object correctly."));
+				UE_LOG(LogTemp, Warning, TEXT("Holder (%s) did not report setting the Value Store Object correctly, check its ValueStoreHolderInterface and ensure it is implemented correctly and returns Success = true."), *Holder->GetName());
 			}
 
 			UObject* ValueStoreInterfaceObject_Set = IValueStoreHolderInterface::Execute_GetValueStoreObject(Holder).GetObject();
 			if (ValueStoreInterfaceObject != ValueStoreInterfaceObject_Set)
 			{
-				// TODO: Warn that Holder does not return the ValueStore we just set!
-				//UE_LOG(LogTemp, Warning, TEXT("Holder does not return the ValueStore we just set!"));
+				UE_LOG(LogTemp, Warning, TEXT("Holder (%s) did not set the Value Store Object correctly, check its ValueStoreHolderInterface and ensure it is implemented correctly."), *Holder->GetName());
 
 				// Return the one that is actually stored now on the object
 				return ValueStoreInterfaceObject_Set;
@@ -62,63 +63,44 @@ UObject* UValueStoreLibrary::GetValueStoreObject(UObject* Holder, const bool bCr
 		if(HolderAsActor)
 		{
 			// Get Component from Actor that implements ValueStoreInterface
-			UActorComponent* Component = HolderAsActor->GetComponentByClass(UValueStoreInterface::StaticClass());
-			if (IsValid(Component))
+			TArray<UActorComponent*> InterfaceComponents = HolderAsActor->GetComponentsByInterface(UValueStoreInterface::StaticClass());
+			if (InterfaceComponents.Num() > 0)
 			{
-				return Component;
+				if (InterfaceComponents.Num() > 1)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Holder (%s) is an Actor, and has more than one component that implements ValueStoreHolderInterface. This is not recommended, we can't know which one to use, so we use the first one in the list."), *Holder->GetName());
+				}
+				return InterfaceComponents[0];
 			}
 			
 			// Get Component from Actor that implements ValueStoreHolderInterface
-			Component = HolderAsActor->GetComponentByClass(UValueStoreHolderInterface::StaticClass());
-			if (IsValid(Component))
+			InterfaceComponents = HolderAsActor->GetComponentsByInterface(UValueStoreHolderInterface::StaticClass());
+			if (InterfaceComponents.Num() > 0)
 			{
-				return GetValueStoreObject(Component, bCreateIfMissing);
+				return GetValueStoreObject(InterfaceComponents[0], bCreateIfMissing);
 			}
 			else if(bCreateIfMissing)
 			{
-				Component = NewObject<UValueStoreComponent>(HolderAsActor);
+				UActorComponent* Component = NewObject<UValueStoreComponent>(HolderAsActor);
 				Component->RegisterComponent();
+
 				return GetValueStoreObject(Component, bCreateIfMissing);
 			}
 			else
 			{
 				// Holder is an Actor, doesn't have a component with one of our interfaces. Also CreateIfMissing is false, so we shouldn't make one. 
+				// TODO: Remove this log, it is just for debugging
+				UE_LOG(LogTemp, Display, TEXT("Holder (%s) is an Actor, doesn't have a component with one of our interfaces. Also CreateIfMissing is false, so we shouldn't make one."), *Holder->GetName());
 				return NULL;
 			}
 		}
 		else
 		{
 			// This Holder, does not implement either interface, and is not an actor, there is no way we can get a ValueStore from it.
+			UE_LOG(LogTemp, Warning, TEXT("To use this object (%s) as a Value Store, Implement the ValueStoreHolderInterface."), *Holder->GetName());
 			return NULL;
 		}
 	}
-
-
-
-	// If the holder sent in is a UValueStoreComponent, then return it.
-	//UValueStoreComponent* ValueStoreComponent = Cast<UValueStoreComponent>(Holder);
-	//if (IsValid(ValueStoreComponent))
-	//{
-	//	return ValueStoreComponent->ValueStoreObject;
-	//}
-
-	// If the holder is an actor, look for ValueStoreComponent
-	//const AActor* HolderAsActor = Cast<AActor>(Holder);
-	//if (IsValid(HolderAsActor))
-	//{
-	//	ValueStoreComponent = Cast<UValueStoreComponent>(HolderAsActor->GetComponentByClass(UValueStoreComponent::StaticClass()));
-	//	return ValueStoreComponent;
-	//}
-	//
-	//
-	//if (!IsValid(ValueStoreComponent) && bCreateIfMissing)
-	//{
-	//		//ValueStoreComponent = NewObject<UValueStoreComponent>(HolderAsActor); //TEXT("Value Store Component")
-	//		ValueStoreComponent = CreateDefaultSubobject<UValueStoreComponent>(TEXT("Value Store Component"));
-	//		ValueStoreComponent->RegisterComponent();
-	//
-	//}
-	//return ValueStoreComponent;
 
 	return NULL;
 }

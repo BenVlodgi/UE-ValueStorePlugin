@@ -9,12 +9,12 @@ UValueStoreComponent::UValueStoreComponent()
 
 }
 
-TScriptInterface<IValueStoreInterface> UValueStoreComponent::GetValueStoreObject()
+TScriptInterface<IValueStoreInterface> UValueStoreComponent::GetValueStoreObject_Implementation()
 {
 	return ValueStoreObjectReference;
 }
 
-void UValueStoreComponent::SetValueStoreObject(const TScriptInterface<IValueStoreInterface>& ValueStore, bool& Success)
+void UValueStoreComponent::SetValueStoreObject_Implementation(const TScriptInterface<IValueStoreInterface>& ValueStore, bool& Success)
 {
 	ValueStoreObjectReference = ValueStore;
 	Success = true;

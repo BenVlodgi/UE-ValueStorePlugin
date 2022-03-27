@@ -12,7 +12,7 @@
 /**
  Holds a ValueStore
 */
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class VALUESTORESYSTEM_API UValueStoreComponent : public UActorComponent, public IValueStoreHolderInterface
 {
 	GENERATED_BODY()
@@ -30,10 +30,8 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	TScriptInterface<IValueStoreInterface> ValueStoreObjectReference;
 	
-	//UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Value Store System|Value Store Holder Interface")
-	TScriptInterface<IValueStoreInterface> GetValueStoreObject();
-
-	//UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Value Store System|Value Store Holder Interface")
-	void SetValueStoreObject(const TScriptInterface<IValueStoreInterface>& ValueStore, bool& Success);
+	// IValueStoreHolderInterface implementations
+	virtual TScriptInterface<IValueStoreInterface> GetValueStoreObject_Implementation() override;
+	virtual void SetValueStoreObject_Implementation(const TScriptInterface<IValueStoreInterface>& ValueStore, bool& Success) override;
 	
 };
