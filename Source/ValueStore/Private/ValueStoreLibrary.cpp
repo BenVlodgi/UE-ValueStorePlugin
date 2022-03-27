@@ -62,14 +62,14 @@ UObject* UValueStoreLibrary::GetValueStoreObject(UObject* Holder, const bool bCr
 		if(HolderAsActor)
 		{
 			// Get Component from Actor that implements ValueStoreInterface
-			UComponent* Component = HolderAsActor->GetComponentByInterface(UValueStoreInterface::StaticClass());
+			UActorComponent* Component = HolderAsActor->GetComponentByClass(UValueStoreInterface::StaticClass());
 			if (IsValid(Component))
 			{
 				return Component;
 			}
 			
 			// Get Component from Actor that implements ValueStoreHolderInterface
-			Component = HolderAsActor->GetComponentByInterface(UValueStoreHolderInterface::StaticClass());
+			Component = HolderAsActor->GetComponentByClass(UValueStoreHolderInterface::StaticClass());
 			if (IsValid(Component))
 			{
 				return GetValueStoreObject(Component, bCreateIfMissing);
@@ -79,6 +79,11 @@ UObject* UValueStoreLibrary::GetValueStoreObject(UObject* Holder, const bool bCr
 				Component = NewObject<UValueStoreComponent>(HolderAsActor);
 				Component->RegisterComponent();
 				return GetValueStoreObject(Component, bCreateIfMissing);
+			}
+			else
+			{
+				// Holder is an Actor, doesn't have a component with one of our interfaces. Also CreateIfMissing is false, so we shouldn't make one. 
+				return NULL;
 			}
 		}
 		else
